@@ -14,7 +14,6 @@ class TestCardClass(unittest.TestCase):
     def setUp(self):
         self.card1=Card();
         self.card2=Card(3,13)
-        self.card3=Card(2,10.5)
 
     
     def test_Card_variables(self):
@@ -47,12 +46,9 @@ class TestCardClass(unittest.TestCase):
             
         self.assertEqual(self.card2.rank_num,13,"test Card's constructor with arguments")
 
-        # test stress case
-        self.assertIsInstance(self.card3.rank_num,int,"test whether Cards' rank_num is always interger")
-
     def test_Card_str_method(self):
         self.assertEqual(str(self.card1),"2 of Diamonds")
-        self.assertTrue(str(self.card2)=="King of Spades" or str(self.card2)=="13 of Spades")
+        self.assertTrue(str(self.card2)=="King of Spades")
 
 class TestDeckClass(unittest.TestCase):
     def setUp(self):
