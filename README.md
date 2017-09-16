@@ -7,7 +7,6 @@ This is the first class project of SI 507 offered by UMSI in Fall 2017.The prima
 This project is designed to run with Python 3 on Linux or Windows OS.
 
 ```
-
 certifi==2017.7.27.1
 chardet==3.0.4
 idna==2.6
@@ -36,7 +35,7 @@ cd SI507_project1
 
 pip install -r requirements.txt 
 ```
-
+# Running
 After setting up the environment, run SI507F17_project1_cards.py, with an expected output as below: 
 
 ```
@@ -118,9 +117,9 @@ FAILED (failures=3)
 ## Coding style
 PEP 8
 
-## contributor
+## Contributor
 Yanbang WANG
 
-## Acknowledgments
+# Acknowledgments
 During the process, course instructor Dr.Jaclyn Cohen and GSI Mr.Anand Pankaj Doshi has provided for me great help and support in learning the knowledge and dealing with the code.
 
