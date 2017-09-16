@@ -47,13 +47,150 @@ class TestCardClass(unittest.TestCase):
         self.assertEqual(self.card2.rank_num,13,"test Card's constructor with arguments")
         
 
-    def test_Card_method(self):
+    def test_Card_str_method(self):
         self.assertEqual(str(self.card1),"2 of Diamonds")
         self.assertTrue(str(self.card2)=="King of Spades" or str(self.card2)=="13 of Spades")
 
 class TestDeckClass(unittest.TestCase):
     def setUp(self):
-        pass
+        self.template_card=Card()
+        self.deck=Deck()
+
+    def test_Deck_constructor(self):
+        self.assertIsInstance(self.deck.cards, list, "test cards' type")
+        self.assertEqual(len(self.deck.cards),52,"test cards' length")
+        for i in range(1,14):
+            for j in range(4):
+                self.assertTrue(str(Card(j,i)) in str(self.deck),"test cards' content")
+
+        
+    def test_Deck_string_method(self):
+        deck_name=str(self.deck)
+        self.assertIsInstance(deck_name,str,"test __str__ method's returned type, actually a little redundant")
+        lines=deck_name.split('\n')
+        self.assertEqual(len(lines),52,"test whether __str__ method returns 52 lines")
+        for i in range(1,14):
+            for j in range(4):
+                self.assertTrue(str(Card(j,i)) in lines,"test __str__ method's returned content")
+
+    def test_Dectk_pop_card_method(self):
+        expected_card1=self.deck.cards[-1]
+        card1=self.deck.pop_card()
+        self.assertEqual(str(card1),str(expected_card1),"test the defualt behavior of pop method")
+        for i in range(1,14):
+            for j in range(4):
+                
+                if str(Card(j,i))==str(card1):
+                    continue
+                self.assertTrue(str(Card(j,i)) in str(self.deck),"test defualt behavior of pop method")
+
+        expected_card2=self.deck.cards[0]
+        card2=self.deck.pop_card(0)
+        self.assertEqual(str(card2),str(expected_card2),"test the pop method by passing user-defined position")
+
+        for i in range(1,14):
+            for j in range(4):
+                if str(Card(j,i))==str(card1):
+                    continue
+                self.assertTrue(str(Card(j,i)) in str(self.deck),"test the pop method by passing user-defined position")
+
+                
+        for i in range(50):
+            self.assertTrue(self.deck.pop_card(),"test whether the Deck object can keep popping when it has cards")
+            # self.assertTrue(not self.deck.pop_card(),"test whether the Deck object can still pop when it is already empty")
+
+    def test_Deck_shuffle_method(self):
+        positions=[]
+        # test type,length,content
+        self.deck.shuffle()
+        self.assertIsInstance(self.deck.cards, list, "test shuffuled cards' type")
+        self.assertEqual(len(self.deck.cards),52,"test shuffuled cards' length")
+        for i in range(1,14):
+            for j in range(4):
+                self.assertTrue(str(Card(j,i)) in str(self.deck),"test shuffuled cards' content")
+                positions.append(str(self.deck).split('\n').index(str(Card(j,i))))
+
+        # test randomness
+        new_positions=[]
+        # test type,length,content
+        self.deck.shuffle()
+        for i in range(1,14):
+            for j in range(4):
+                new_positions.append(str(self.deck).split('\n').index(str(Card(j,i))))
+        self.assertTrue(new_positions!=positions,"test randomness of shuffling")
+
+    def test_Deck_replace_card_method(self):
+        original_name_lines=str(self.deck).split('\n')
+        name30=original_name_lines.pop(30)
+        original_name_lines.append(name30)
+        expected_deck_name='\n'.join(original_name_lines)
+
+        card30=self.deck.pop_card(30)
+        self.deck.replace_card(card30)
+        self.assertEqual(str(self.deck),expected_deck_name,"test whether 'adding new card' functions well")
+        deck_name=str(self.deck)
+
+        self.deck.replace_card(card30)
+        self.assertEqual(deck_name,str(self.deck),"test whether 'adding old card' functions well")
+                                            
+        
+
+
+    def test_Deck_sort_cards_method(self):
+        for i in range(0,52):
+            self.deck.pop_card()
+        self.deck.replace_card(Card(3, 4))
+        self.deck.replace_card(Card(2, 2))
+        self.deck.replace_card(Card(0, 12))
+        self.deck.replace_card(Card(1, 8))
+        self.deck.sort_cards()
+        expected_string="{}\n{}\n{}\n{}".format(str(Card(0, 12)),str(Card(1, 8)),str(Card(2, 2)),str(Card(3, 4)))
+        self.assertEqual(str(self.deck),expected_string,"test sort_card method")
+
+    def test_Deck_deal_hand_method(self):
+        
+        for i in range(3):
+            self.deck.pop_card()
+        original_deck_name=str(self.deck)
+        hand=self.deck.deal_hand(5)
+        self.assertIsInstance(hand, list,"test the type of the returned value")
+        self.assertEqual(len(hand),5,"test the length of the returned list")
+        self.assertIsInstance(hand[0],Card,"test the type of elements in the returned list")
+        indices=[]
+        for i in range(5):
+            self.assertTrue(str(hand[i]) in original_deck_name.split('\n'),"test if hand's card comes from the original deck")
+            index=original_deck_name.split('\n').index(str(hand[i]))
+            self.assertFalse(index in indices,"test if 'hand' has any duplicate cards")
+            indices.append(original_deck_name.split('\n').index(str(hand[i])))
+
+        
+        # test the case where many cards are asked to returned
+        """
+        original_deck_name=str(self.deck)
+        hand=self.deck.deal_hand(50)
+        self.assertIsInstance(hand, list,"test the type of the returned value")
+        self.assertEqual(len(hand),44,"test the length of the returned list")
+        self.assertIsInstance(hand[0],Card,"test the type of elements in the returned list")
+        indices=[]
+        for i in range(5):
+            self.assertTrue(str(hand[i]) in original_deck_name.split('\n'),"test if hand's card comes from the original deck")
+            index=original_deck_name.split('\n').index(str(hand[i]))
+            self.assertFalse(index in indices,"test if 'hand' has any duplicate cards")
+            indices.append(original_deck_name.split('\n').index(str(hand[i])))
+        """
+class TestPlayWarGameFunction(unittest.TestCase):
+    def test_play_war_game_function(self):
+        result,score1,score2=play_war_game(testing=True)
+        self.assertIsInstance(result,str,"test first returned value's type")
+        self.assertIsInstance(score1,int,"test second returned value's type")
+        self.assertIsInstance(score2,int,"test third returned value's type")
+        if score1>score2:
+            self.assertEqual(result,'Player1')
+        elif score1==score2:
+            self.assertEqual(result,'Tie')
+        else:
+            self.assertEqual(result,'Player2')
+
 
 if __name__=='__main__':
     unittest.main(verbosity=2)
