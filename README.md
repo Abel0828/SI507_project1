@@ -35,7 +35,7 @@ cd SI507_project1
 
 pip install -r requirements.txt 
 ```
-# Running
+## Running
 After setting up the environment, run SI507F17_project1_cards.py, with an expected output as below: 
 
 ```
@@ -120,6 +120,6 @@ PEP 8
 ## Contributor
 Yanbang WANG
 
-# Acknowledgments
+## Acknowledgments
 During the process, course instructor Dr.Jaclyn Cohen and GSI Mr.Anand Pankaj Doshi has provided for me great help and support in learning the knowledge and dealing with the code.
 
