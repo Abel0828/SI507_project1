@@ -17,12 +17,8 @@ class TestCardClass(unittest.TestCase):
 
     
     def test_Card_variables(self):
-        self.assertEqual(len(self.card1.suit_names),4,"test Card's suit_names content length")
-        self.assertTrue("Diamonds" in self.card1.suit_names,"test Card's suit_names content")
-        self.assertTrue("Clubs" in self.card1.suit_names,"test Card's suit_names content")
-        self.assertTrue("Hearts" in self.card1.suit_names,"test Card's suit_names content")
-        self.assertTrue("Spades" in self.card1.suit_names,"test Card's suit_names content")
-        
+        self.assertEqual(self.card1.suit_names,['Diamonds','Clubs','Hearts','Spades'],"test Card's suit_names content")
+
         self.assertEqual(self.card1.rank_levels,list(range(1,14)),"test Card's rank_levels content")
         
         expected_dict={1:'Ace',11:'Jack',12:'Queen',13:'King'}
@@ -52,5 +48,12 @@ class TestCardClass(unittest.TestCase):
         
 
     def test_Card_method(self):
+        self.assertEqual(str(self.card1),"2 of Diamonds")
+        self.assertTrue(str(self.card2)=="King of Spades" or str(self.card2)=="13 of Spades")
+
+class TestDeckClass(unittest.TestCase):
+    def setUp(self):
         pass
-unittest.main(verbosity=2)
+
+if __name__=='__main__':
+    unittest.main(verbosity=2)
