@@ -14,6 +14,7 @@ class TestCardClass(unittest.TestCase):
     def setUp(self):
         self.card1=Card();
         self.card2=Card(3,13)
+        self.card3=Card(2,10.5)
 
     
     def test_Card_variables(self):
@@ -45,7 +46,9 @@ class TestCardClass(unittest.TestCase):
             self.assertEqual(self.card2.rank,'King',"test Card's constructor with arguments")
             
         self.assertEqual(self.card2.rank_num,13,"test Card's constructor with arguments")
-        
+
+        # test stress case
+        self.assertIsInstance(self.card3.rank_num,int,"test whether Cards' rank_num is always interger")
 
     def test_Card_str_method(self):
         self.assertEqual(str(self.card1),"2 of Diamonds")
@@ -163,9 +166,9 @@ class TestDeckClass(unittest.TestCase):
             self.assertFalse(index in indices,"test if 'hand' has any duplicate cards")
             indices.append(original_deck_name.split('\n').index(str(hand[i])))
 
-        
-        # test the case where many cards are asked to returned
         """
+        # test the case where too many cards are asked to returned
+        
         original_deck_name=str(self.deck)
         hand=self.deck.deal_hand(50)
         self.assertIsInstance(hand, list,"test the type of the returned value")
@@ -181,15 +184,24 @@ class TestDeckClass(unittest.TestCase):
 class TestPlayWarGameFunction(unittest.TestCase):
     def test_play_war_game_function(self):
         result,score1,score2=play_war_game(testing=True)
-        self.assertIsInstance(result,str,"test first returned value's type")
+        self.assertIsInstance(result,tuple,"test first returned value's type")
         self.assertIsInstance(score1,int,"test second returned value's type")
         self.assertIsInstance(score2,int,"test third returned value's type")
         if score1>score2:
-            self.assertEqual(result,'Player1')
+            self.assertEqual(result[0],'Player1')
         elif score1==score2:
-            self.assertEqual(result,'Tie')
+            self.assertEqual(result[0],'Tie')
         else:
-            self.assertEqual(result,'Player2')
+            self.assertEqual(result[0],'Player2')
+
+class TestShowSong(unittest.TestCase):
+    def setUp(self):
+        self.song1=show_song()
+        self.song2=show_song('truth')
+        
+    def test_show_song_function(self):
+        self.assertIsInstance(self.song1,helper_functions.Song,"test show_song function(defualt)")
+        self.assertIsInstance(self.song2,helper_functions.Song,"test_show_song function")
 
 
 if __name__=='__main__':
