@@ -62,7 +62,7 @@ Player2 wins
 All I Do Is Win (feat. T-Pain, Ludacris, Snoop Dogg & Rick Ross) DJ Khaled
 ```
 
-## Running the tests
+## Running the Test
 
 run SI507F17_project1_tests.py, should expect an output displaying 3 failures being checked out:
 
@@ -114,7 +114,7 @@ FAILED (failures=3)
 ```
 
 
-## Coding style
+## Coding Style
 PEP 8
 
 ## Contributor
